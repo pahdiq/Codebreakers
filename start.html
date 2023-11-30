@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>NeoCity</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+
+    <style>
+        body {
+            background: black url('pics/eye.jpg') no-repeat center/cover;
+            color: white;
+            font-family: verdana;
+        }
+
+        body, h1, p {
+            font-size: 20px; /* Adjust the font size here */
+        }
+
+        h1,
+        p {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        nav {
+            background-color: red;
+        }
+
+        .navbar-brand,
+        .nav-link {
+            color: #ffffff;
+        }
+
+        .center-content {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            height: 100vh;
+            padding-top: 50px;
+        }
+
+        button {
+            background-color: #ff6b6b;
+            color: #1e1e1e;
+            font-size: 18px;
+            font-weight: bold;
+            padding: 5px 10px;
+            margin: 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #ff4040;
+            color: #ffffff;
+        }
+
+        #money-display {
+            color: #ffffff;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg">
+        <div class="container-fluid">
+            <a class="navbar-brand" href="index.html">Home</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <span id="money-display" class="navbar-text mr-3">Money: $0</span>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a class="nav-link" href="start.html">Start</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="back.html">Background</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="center-content">
+        <h1>Welcome to the Cyberpunk City</h1>
+        <p>You find yourself in the heart of Neon City, a sprawling metropolis of towering skyscrapers and flickering holographic billboards. The air is thick with the scent of synthetic fuel.</p>
+        <p>As you navigate the crowded streets, you come across a mysterious alley. A figure in a trench coat approaches you.</p>
+        <p>"Hey, you look like someone who can handle themselves," the stranger says. "I've got a job for you. Are you in?"</p>
+        <button onclick="makeChoice('accept')">Accept the job</button>
+        <button onclick="makeChoice('decline')">Decline and walk away</button>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+
+    <script>
+        var money = 0;
+        const storyNodes = {
+            start: {
+                text: 'You find yourself in the heart of Neon City, a sprawling metropolis of towering skyscrapers and flickering holographic billboards. The air is thick with the scent of synthetic fuel. You\'ve been trying to find a job for weeks, but no one seems to be hiring. As you navigate the crowded streets, you come across a mysterious alley. A figure in a trench coat approaches you. "Hey, you Alex Mercer?" the stranger asks.',
+                choices: {
+                    Yes: "jobOffer",
+                    Nope: "walkAway"
+                }
+            },
+            jobOffer: {
+                Image: 'pics/alley.jpg',
+                text: 'You nod, and move closer to the man. He\'s wearing a long coat, with the collar turned up to block the view of his face. His voice is gruff as he speaks. "I\'ve got a job for you. Are you in? I\'ll make it worth your while..."',
+                choices: {
+                    "Give me more details": "acceptJob",
+                    no: "declineJob"
+                }
+            },
+            walkAway: {
+                text: '"Hmph." The mas stomps away, and you continue on your way.',
+                choices: {
+                    continue: "exploreCity"
+                }
+            },
+            declineJob: {
+                text: '"Hmph." The mas stomps away, and you continue on your way.',
+                choices: {
+                    continue: "exploreCity"
+                }
+            },
+            acceptJob: {
+                text: '"I\'ve heard you hack into anything. I need you to hack into the city\'s mainframe and steal some data for me. I\'ll pay you 10,000 credits. It\'s nothing confidential, just some building plans. I\'ll get you access, I juest need your skills. Are you in?" 10,000 credits would pay your bills for a year or so, giving you time to find a better job.',
+                choices: {
+                    Yes: "hack",
+                    Nah: "walkAway"
+                }
+            },
+            exploreCity: {
+                Image: 'pics/road.jpg',
+                text: 'You wander the city for hours, stopping at every programmers shop you can find, but nobodies hiring. After hours of searching, you decide to head home, but as you do, you see a group of people standing around, looking at their tablets and talking excitedly.',
+                choices: {
+                    Investigate: "invest",
+                    "Go Home": "goHome2"
+                }
+            },
+            hack: {
+                text: 'You nod again, and the man returns the gesture. "Meet me in two days at this location." He hands you a piece of paper of all things, with an address on it. He looks around as he walks away, making sure that your discussion wasn\'t seen. You look at the adress, memorize it quickly, then tear the paper up. Well. now you have a job, don\'t know how legal it is, but oh well. You head home to prepare for the job.',
+                choices: {
+                    "Go Home": "goHome"
+                }
+            },
+            invest: {
+                text: 'You approach quietly, and see over their shoulders that their on some sort of gaming forum. Some site called Nine, Ten, Do! It looks wierd, but you quickly see what they are so excited about. Apperantly the company that owns the site is having a competition for 100,000 credits! You decide to head home and check it out. 100,000 credits is enough to pay your rent for years, not to mention all your other bills, you\'d be set for life!',
+                choices: {
+                    "Go home": "game",
+                    "Go the long way": "love"
+                }
+            },
+            goHome: {
+                text: 'You get home and start studying. The databases the man wants you to hack should have almost no security, as the government is nothing more than a pawn for the businesses that really run the world. So it doesn\'t take you long to feel prepared.',
+                choices: {
+                    "Meet the man": "Meeting",
+                }
+            },
+            goHome2: {
+                text: 'You make it home, dejected at not having found a job. You decide to study up on your hacking skills, just in case.',
+                choices: {
+                    "You died of boredom": "start",
+                }
+            },
+            love: {
+                Image: 'pics/tatoo.jpg',
+                text: 'As you approach your apartment (you live on the 256th floor of a rundown building), a woman steps out in front of you, lifting her arm to wave down a taxi. You move to go around her, but you see she has a tatoo on her forearm. Not just any tatoo, a tatoo for the Code Breakers. The best hacking group in the world. They were single handly responsible for the fall of the corrupt government, and the rise of the corporations. They are now considered a terrorist organization, and joining is punishable by death.',
+                choices: {
+                    "Talk to her": "Meet",
+                    "Avoid detetcion": "game"
+                }
+            },
+            Meeting: {
+                text: 'The two days pass quickly, and you finally meet up with the man outside the building. "Here" he says quietly, handing you a key card. "This will get you into the building. The data is on the 175th floor. Good luck." The building appears to be an old government building, one that hasn\'t been used in more than a decade. You\'ve got a couple of choices now, how do you want to approch this?',
+                choices: {
+                    "Enter through the front door": "desk",
+                    "Try the side door": "sneaky"
+                }
+            },
+            Meet: {
+                Image: 'pics/woman.jpg',
+                text: 'You step forward quickly, and whisper to the woman, "I know what you do." She freezes, hand still in the air. "What do you want?" She asked coldly, as her arm dropped. She looks pissed off. She glances around while waiting for you to respond, as if watching for someone.',
+                choices: {
+                    "To join": "Welcome",
+                    "Money": "Thief"
+                }
+            },
+            game: {
+                text: 'You get home, and bolt your door shut, then turn your computer on. You look up Nine Ten Do! and quickly find the forum. Apperantly you have to answer some questions about some old video games, and you\'ll be entered into a prize pool.',
+                choices: {
+                    "Play": "play",
+                    "Go to sleep": "sleep"
+                }
+            },
+            sleep: {
+                text: 'You turn out the lights, and go to bed, hoping tomorrow will be better.',
+                choices: {
+                    "Tomorrow sucked": "start",
+                }
+            },
+            desk: {
+                Image: 'pics/Hall.jpg',
+                text: 'You walk up to the front door, covered in graffiti and almost falling apart, and swipe the key card on the nearby scanner. The door opens, and you walk in. The inside looks clean, but old. There must be some sort of cleaning bot that keeps everything running. But, there isn\'t anybody visible, so you walk to the elevators, and go up to the floor that was recomended. The elevator opens to a hallway, with a single wall computer at the end of it, again the computer looks in perfect condition. You walk over, and begin your magic. Do you want to be careful, or quick?',
+                choices: {
+                    "Careful": "careful",
+                    "Quick": "quick"
+                }
+            },
+            sneaky: {
+                Image: 'pics/Hall.jpg',
+                text: 'You walk around the building, and find a side door, or what used to be a side door. You swipe the key card, and walk in. The inside looks clean, but old. There must be some sort of cleaning bot that keeps everything running. But, there isn\'t anybody visible, so you walk to the elevators, and go up to the floor that was recomended. The elevator opens to a hallway, with a single wall computer at the end of it, again the computer looks in perfect condition. You walk over, and begin your magic. Do you want to be careful, or quick?',
+                choices: {
+                    "Careful": "careful",
+                    "Quick": "quick"
+                }
+            },
+            Welcome: {
+                text: 'Her face darkens as you speak. She looks around, then gets right in your face. "Who do you think you are? You couldn\'t possibly be good enough." She says, her voice dripping with venom. "I\'m the best hacker in the city." You say, trying to sound confident. "Prove it." She says, and walks away, looking around again. You follow her, and she leads you to a building. "Hack into the mainframe, and I\'ll let you join." She says, and walks away.',
+                choices: {
+                    "Prove yourself": "test",
+                    "No Thank you": "goHome3"
+                }
+            },
+            Thief: {
+                text: 'Money?? She asks, looking at you like a worm on the sidewalk. "You\'re trying to blackmail me? And yet you know who I am, who I work for?" She bursts out laughing. "Alright kid, here\'s your money, but expect our revenge. She taps her phone a few times and walks away. You check your bank account, and see that she\'s deposited 100,000,000 credits. You\'re rich! you can do anything you want!',
+                choices: {
+                    "HAHAHAHAHAHAHA (check your money) P.S. You lose. They broke this website, you have to refresh to move on.": {
+                    result: "refresh",
+                    money: 100000000
+                },
+                    }
+            },
+            play: {
+                text: 'You click play, and the first question appears. In Breath of the Wild, The Four Champions are named Urbosa, Daruk, Revali and...',
+                choices: {
+                    "Mipha": "q2",
+                    "Midna": "fail",
+                    "Milan": "fail",
+                    "Majora": "fail",
+                }
+            },
+            q2: {
+                text: 'Which of the following is NOT an area in Breath of the Wild\'s Hyrule?',
+                choices: {
+                    "Gorko Lake": "fail",
+                    "Jeddo Bridge": "fail",
+                    "Ruto wastelands": "q3",
+                    "Taran pass": "fail",
+                }
+            },
+            q3: {
+                text: 'What is the name of the king of Hyrule?',
+                choices: {
+                    "King Rhoam": "q4",
+                    "King Rhodes": "fail",
+                    "King Redlam": "fail",
+                    "King Boram": "fail",
+                }
+            },
+            q4: {
+                text: 'Four Great Fairies live in the land of Hyrule. They\'re called Cotera, Kaysa, Mija and...',
+                choices: {
+                    "Kay": "fail",
+                    "Tera": "q5",
+                    "Isa": "fail",
+                    "Mij": "fail",
+                }
+            },
+            q5: {
+                text: 'What if Zelda was a girl?',
+                choices: {
+                    "She would be awesome": "fail",
+                    "Link would fall in love": "fail",
+                    "Who is Zelda": "fail",
+                    "She is!": "win",
+                }
+            },
+            win: {
+                text: 'The screen goes blank, and black letters appear. "You Win!" it says, blinking. You\'ve won the competition! You quickly fill out the form, and submit it. You\'ll find out if you won in a few days."',
+                choices: {
+                    "Wait it out": "lose",
+                    "Hack the system": "hack2",
+                }
+            },
+            fail: {
+                text: 'The screen goes blank, and red letters appear. "You Lose!" it says, blinking. You\'ve lost the competition! You only get one attempt, what do you want to do? Maybe you can hack in and get more tries?',
+                choices: {
+                    "Game over": "start",
+                    "Try again": "play",
+                }
+            },
+            careful: {
+                text: 'You proceed carfully, covering your tracks at every turn. It takes almost an hour, but you finally get the data. To your suprise, you find a file labled "Water filtration system". That\'s wierd, this was supposed to be the building plans.',
+                choices: {
+                    "Look into the files": "look",
+                    "A job is a job, and I want out": "man",
+                }
+            },
+            man: {
+                text: 'You grab the files the man wanted, it looks like he wants information on a specific home out in the slums, an area so out of the way that nobody wants to do anything with it. You quickly head out the same way you entered, and hand the man the drive. He looks at it, and smiles. "Thank you." He says, and taps a couple buttons. "Your money will arrive shortly." He says, and walks away.',
+                choices: {
+                    "Whatever": "home",
+                    "Follow him": "follow",
+                }
+            },
+            quick: {
+                Image: 'pics/cyborg.png',
+                text: 'Speed is the best method, Someone could show up any second. You quickly hack into the system, You start the file transfer, when an alarm sounds. You freeze, and then run. You make it to the stairs, knowing they would have locked the elevator. But the door doesn\'t open. You hear clapping, slow, sarcastic clapping. You turn around slowly, and see a cyborg standing there.',
+                choices: {
+                    "Try the door again": "door",
+                    "Bluff": "lie",
+                }
+            },
+            test: {
+                Image:'pics/building.jpg',
+                text: 'You watch the lady disappear into the crowds, vanishing before you can open your mouth. Looking at the building she brought you to, your mouth drops open. This is none other than the headquarters of Walzin, The biggest company in the world. Their building was over ten thousand stories tall, and was supposed to have the best security. This would be no easy task. Not only were they the main supplier of everything you could ever want, they were also head of the IPCG, the Interplanetary Corporations group, the group that was in charge of the entire world!',
+                choices: {
+                    "I got this": "walzin",
+                    "Nope!": "goHome3",
+                }
+            },
+            hack2: {
+                text: 'You sit there, staring at the screen. Leave it up to chance? A big score like this? Not a chance! Seconds later you were in the system. It didn\'t take long to find the AI responisble for picking the winner. A line of code here, and another there, and now your garunteed to win! You\'ll get your email in two days time.',
+                choices: {
+                    "Sleep the time away": "winner",
+                    "Poke around": "poke",
+                }
+            },
+            lose: {
+                text: 'You wait a few days, and then check your email. You didn\'t win. You sigh, and go back to your life. You still can\'t find a job, and you die a couple weeks later.',
+                choices: {
+                    "Game over": "start",
+                }
+            },
+            home: {
+                text: 'With your job accomplished, you head home, $10,000 richer. The cash should carry you through for a while. You open the door to your room and turn on the tv, before falling asleep on the couch. What feels like moments later, you wake up as the TV starts blaring, having raised it\'s own volume. We have just recieved a report that there has been a bombing in the slums! The area has been completely destroyed, and there are no survivors. The police are investigating, but they have no leads. It appears the terrorists were targeting a specific building. You sit there, stunned.',
+                choices: {
+                    "Did you do that?": "uhoh",
+                    "hear more": "wait",
+                }
+            },
+            follow: {
+                text: 'You follow the man, after letting him get a small headstart. To your suprise, he seems to be headed for the slums... You follow him for hours, down elevators, accross roads, even through an old movie theatre. Just when your about to give up he turns into a house. After waiting a moment, you sneak up to the door.',
+                choices: {
+                    "Listening": "hear",
+                }
+            },
+            door: {
+                text: 'The cyborg laughs at your futile attempts. Nice try, but that door is sealed. And so is your fate. The last thing you feel is a laser from the cyborg\'s chest...',
+                choices: {
+                    "Game over": "start",
+                }
+            },
+            lie: {
+                text: '"Hello there." You say forcefully. "What are you doing here?" The cyborg freezes, clearly confused. "What am I doing?" She asks slowly. "What are you doing here? I am this buildings security." Sweat drips down your back as you respond.',
+                choices: {
+                    "I'm supposed to be here": "what",
+                    "I asked first, and I need an answer": "bluff",
+                }
+            },
+            walzin: {
+                text: 'You look up at the building, and roll your shoulders. The Code Breakers are super elite, so it makes sense they would give you a task like this. This should be fun! how do you want to tackle this problem?',
+                choices: {
+                    "Act like I belong": "act",
+                    "sneakiness is key": "key",
+                }
+            },
+            winner: {
+                text: 'As you expected, you get an email a couple days later, and you won! The money has been deposited in your account, and you\'re set for life! or at least for now. As you skim theough the email that was sent to you, you notice something odd, there seems to be a line at the very bottom in 1 point font, either that or it\'s just a line, you could be seeing things.',
+                choices: {
+                    "Screw that, I'm rich!": "rich",
+                    "What does it say?": "small",
+                }
+            },
+            poke: {
+                text: 'You\'re already in the system, so you might as well have some fun! You cruise through their systems, unstoppable. At first it was all fun and games, looking at their confidential files, looking into their new games, consoles, and even reading some emails. As you read however, you start to notice somethings that don\'t quite add up... Nine Ten Do! is hiding something!',
+                choices: {
+                    "Look further": "looky",
+                    "I'm out, I'll be rich anyway": "winner",
+                }
+            },
+            uhoh: {
+                text: 'You watch on the news as they show giant crater, clearly the terrorists had wanted it gone. And that area did look vaugley familiar from your hack... Panicking a little now, you pull out the copy of files you took for yourself, and compare it to the pictures on the tv. Yup, you were right, you had given the plans of the buildings there to the terrorists.',
+                choices: {
+                    "Turn youself in": "confess",
+                    "They can't find me": "hidden",
+                }
+            },
+            wait: {
+                text: 'You sit in silence, staring at the screen. The reporter talks for a few more minutes before saying "It appears someone hacked into the cities database, but there isn\'t any evidence to suggest who. The police are investigating, and we wil keep you updated on this case as it develops." The TV turned itself down again, as it was just repeating itself.',
+                choices: {
+                    "Did I do this?": "uhoh",
+                }
+            },
+            hear: {
+                text: 'As you move closer, you the voices inside become louder, but it wasn\'t a voice you recognized. "-eak in through this vent, and get access to the vault here. We need to be in and out in five minutes or less. Any questions?" The same man who hired you to steal the plans spoke up. "This isn\'t our normal job, what are we going after?" There was chuckle from the first man "We\'re after information. My sources tell me that something is in there. This isn\'t our normal smash and grab, we need to be careful. We are going in for information, therefore we don\'t need to actually take anything."',
+                choices: {
+                    "What the...": "steal",
+                }
+            },
+            goHome3: {
+                text: 'There\'s too much risk involved, and you don\'t want to get caught. You head home, and try to forget about the whole thing. After all, you\'ve still got the game to win! You pull up the website, and it doesn\'t take long to find the forum. Apperantly you have to answer some questions about some old video games, and you\'ll be entered into a prize pool.',
+                choices: {
+                    "I got this": "play",
+                }
+            },
+            what: {
+                text: '"I\'m supposed to be here" you bluff "I\'m here to fix the computer." The cyborg looks at you, and then at the computer. "You\'re not on the list." She says, and you feel your heart drop.',
+                choices: {
+                    "That's wierd...": "t1",
+                    "Well I should be": "t2",
+                }
+            },
+            bluff: {
+                text: '"I asked first, and I need an answer!" You say. Instantly the cybrog\'s chest lit up, almost blinding you. "You are not authorized to be here." She says, "I am this building\'s securtiy. Now answer me, why are you here?" Her hand twitches, as if a second away from grabbing the blaster at her hip.',
+                choices: {
+                    "I am fixing this computer": "fix",
+                    "That is none of your business": "death",
+                }
+            },
+            act: {
+                Image:"pics/bot.jpg",
+                text: 'You enter the front door, and walk past the receptionist robot. She looks at you, and her mouth glows like she\'s about to say something, but you just keep moving, and she looks away. Sweating a little, you head to the fire stairs, and start walking. You need to find a computer, as soon as possible.',
+                choices: {
+                    "Go up a couple of floors": "10",
+                    "Go up a lot": "1000",
+                }
+            },
+            key: {
+                Image: "pics/lobby.jpg",
+                text: 'You enter the building, just as a big group of people go through the front door. You join the back of the group, and move along with them, pretending to belong. The lobby is massive, and you can see dozens of people walking around.',
+                choices: {
+                    "Join the group": "join",
+                    "Sneak away": "sneak",
+                }
+            },
+            rich: {
+                text: 'You\'re (mostly) clean money should last you for a long time! Everything is going well, until someone starts poking into the code, and discovers you cheated! They can\'t prove it was you, but the comapnay Nine Ten Do! is part of the ruling corporations, so you need to be careful.',
+                choices: {
+                    "Spend the money before it vanishes": "spree",
+                    "Treat it like a suprise, and hoard it": "care",
+                }
+            },
+            small: {
+                text: 'It takes a couple seconds to manipulate the email, but eventually you get the 1 point font to something readable. It says "You have been selected to participate in a special competition. You will be given a series of tasks, and if you complete them, you will be given a prize. If you fail, you will be eliminated. If you don\'t respond, you will have opted out. Good luck."',
+                choices: {
+                    "Reply to the email": "reply",
+                    "Nah, I am rich enough": "rich",
+                }
+            },
+        };
+
+        let currentNode = storyNodes.start;
+
+        function updateStory() {
+    const storyContainer = document.querySelector(".center-content");
+    storyContainer.innerHTML = `<h1>${currentNode.text}</h1>`;
+
+    // Check if the current node has an image
+    if (currentNode.Image) {
+        // Display the image
+        storyContainer.innerHTML += `<img src="${currentNode.Image}" alt="Scene Image" style="max-width: 25%;">`;
+    }
+
+    // Display choices
+    for (const choice in currentNode.choices) {
+        storyContainer.innerHTML += `<button onclick="makeChoice('${choice}')">${choice}</button>`;
+    }
+}
+
+        function makeChoice(choice) {
+    const choiceResult = currentNode.choices[choice];
+    if (choiceResult) {
+        if (choiceResult.money !== undefined) {
+            money = choiceResult.money;
+            updateMoneyDisplay();
+        }
+        currentNode = storyNodes[choiceResult];
+        updateStory();
+    }
+}
+
+        function updateMoneyDisplay() {
+            const moneyDisplay = document.getElementById('money-display');
+            moneyDisplay.textContent = `Money: $${money}`;
+        }
+
+        // Initial story update
+        updateStory();
+        updateMoneyDisplay();
+    </script>
+</body>
+
+</html>
+
